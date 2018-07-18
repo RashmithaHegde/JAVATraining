@@ -7,10 +7,6 @@
   <name>RestJdbc</name>
   <description>RestJdbc</description>
   
-  <!-- <properties>
-        <spring.version>4.1.5.RELEASE</spring.version>
-        
-    </properties> -->
     
      <properties>
         <spring.version>4.1.5.RELEASE</spring.version>
