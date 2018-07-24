@@ -5,60 +5,45 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.app.SpringBootProject.bean.Resort;
-import com.app.SpringBootProject.bean.ResortRowMapper;
+import com.app.SpringBootProject.bean.Guest;
+import com.app.SpringBootProject.bean.GuestRowMapper;
 
-@Transactional
 @Repository
-public class GuestDaoImpl implements IGuestDao {
-
+public class GuestDaoImpl implements IGuestDao{
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	//static int count=101;
 	
 	Date date=new Date();
-	java.sql.Date sqlDate = new  java.sql.Date(date.getTime());
-	
-	static long count =102;
-	
+	//java.sql.Date sqlDate = new  java.sql.Date(date.getTime());
+
 	@Override
-	public long registerResort(Resort resort) { 
-		
-		String status="booked";
-		
-		String query= "INSERT INTO resort(r_reservation_number,guest_id,room_type,arrival_date,departure_date,no_of_people,created_date,updated_date) VALUES (?,?,?,?,?,?,?,?)";
-		
-		long success=jdbcTemplate.update(query, count++,1,resort.getRoomType(),resort.getArrivalDate(),resort.getDepartureDate(),resort.getNoOfPeople(),date,date);
-		
-		if(success==1)
-		{
-			String query1= "UPDATE resort SET status=? ";
+	public void registerGuest(Guest guest) {
+		String query = "INSERT INTO guest(email,first_name,last_name,address,phone,password,created_date,updated_date) VALUES (?,?,?,?,?,?,?,?)";
 
-			jdbcTemplate.update(query1,status);
-
-		}
-		else
-			System.out.println("insertion failed, SOMETHING WENT WRONG . . .!!!");
-		return count;
+		 jdbcTemplate.update(query, guest.getEmail(), guest.getFirstName(),
+				guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),date,date);
+	
 	}
 
 	@Override
-	public void updateResort(Resort resort,long r_reservation_number) {
-		
-
-		String query= "UPDATE resort SET room_type=?, arrival_date=?, departure_date=?,no_of_people=?,updated_date=? WHERE r_reservation_number=?";
-		jdbcTemplate.update(query,resort.getRoomType(),resort.getArrivalDate(),resort.getDepartureDate(),resort.getNoOfPeople(),date,r_reservation_number);
+	public void updateGuest(Guest guest, long guestId) {
+		String query= "UPDATE guest SET email=?, first_name=?,last_name=?,address=?,phone=?,password=? WHERE guest_id=?";
+		jdbcTemplate.update(query,guest.getEmail(), guest.getFirstName(),
+				guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),guestId);
 				
+		
+		
 	}
 
 	@Override
-	public Resort getResort(long r_reservation_number) 
-	{
-		 Resort resort = jdbcTemplate.queryForObject("SELECT * FROM resort WHERE r_reservation_number = ?",
-			     new Object[] { r_reservation_number }, new ResortRowMapper());
-		return resort;
+	public Guest getGuest(long guestId) {
+		Guest guest = jdbcTemplate.queryForObject("SELECT * FROM guest WHERE guest_id = ?",
+			     new Object[] { guestId }, new GuestRowMapper());
+		return guest;
 	}
-
+	
+	
 
 }

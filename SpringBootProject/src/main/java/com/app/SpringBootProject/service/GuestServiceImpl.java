@@ -3,31 +3,31 @@ package com.app.SpringBootProject.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.SpringBootProject.bean.Resort;
-import com.app.SpringBootProject.dao.GuestDaoImpl;
+import com.app.SpringBootProject.bean.Guest;
+import com.app.SpringBootProject.dao.IGuestDao;
 
 @Service
-public class GuestServiceImpl implements IGuestService {
-
+public class GuestServiceImpl implements IGuestService{
 	@Autowired
-	private GuestDaoImpl dao;
+	IGuestDao dao;
+
+	@Override
+	public void registerGuest(Guest guest) {
+		dao.registerGuest(guest);
+		
+	}
+
+	@Override
+	public void updateGuest(Guest guest, long guestId) {
+	dao.updateGuest(guest, guestId);
+		
+	}
+
+	@Override
+	public Guest getGuest(long guestId) {
+		
+	return	dao.getGuest(guestId);
+	}
 	
-	@Override
-	public void registerResort(Resort resort) {
-		 dao.registerResort(resort);
-		
-	}
-
-	@Override
-	public void updateResort(Resort resort,long r_reservation_number) {
-		dao.updateResort(resort,r_reservation_number);
-		
-	}
-
-	@Override
-	public Resort getResort(long r_reservation_number) {
-		
-		return dao.getResort(r_reservation_number);
-	}
-
+	
 }

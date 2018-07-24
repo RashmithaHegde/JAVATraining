@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.SpringBootProject.bean.Guest;
 import com.app.SpringBootProject.bean.Resort;
 import com.app.SpringBootProject.service.IGuestService;
+
 
 @RestController
 
@@ -18,33 +20,32 @@ public class GuestController {
 	@Autowired
 	IGuestService service;
 	
-	//@RequestMapping(value="/register",method=RequestMethod.POST)
-	@PostMapping("/resort/register")
-	public void Register(@RequestBody Resort resort)
+	@PostMapping("/guest/register")
+	public void Register(@RequestBody Guest guest)
 	{
-		service.registerResort(resort);
+		service.registerGuest(guest);
 	}
  
-	@PutMapping("/resort/update/{r_reservation_number}")
-	public void updateResort(@PathVariable long r_reservation_number  ,@RequestBody Resort resort)
+	@PutMapping("/guest/update/{guestId}")
+	public void updateGuest(@PathVariable long guestId  ,@RequestBody Guest guest)
 	{
-		Resort resort1=null;
-		resort1= service.getResort(r_reservation_number);
-		if(resort1!=null)
+		Guest guest1 = new Guest();
+		
+		guest1= service.getGuest(guestId);
+		if(guest1!=null)
 		{
-			service.updateResort(resort,r_reservation_number);
+			service.updateGuest(guest, guestId);
 		}
 		else
-			System.out.println("Invalid Update in process");
-		
+			System.out.println("id does not exits");
 		
 	}
 	
-	@GetMapping("/resort/get/{r_reservation_number}")
-	public Resort getResort(@PathVariable long r_reservation_number )
+	@GetMapping("/guest/get/{guestId}")
+	public Guest getResort(@PathVariable long guestId )
 	{
-		Resort resort=service.getResort(r_reservation_number);
-		return resort;
+		Guest guest=service.getGuest(guestId);
+		return guest;
 	}
 	
 }

@@ -1,12 +1,16 @@
 package com.app.SpringBootProject.dao;
 
-import com.app.SpringBootProject.bean.Resort;
+
+import com.app.SpringBootProject.bean.Guest;
+
 
 public interface IGuestDao {
 	
-	public long registerResort(Resort resort);
+	public void registerGuest(Guest guest);
 	
-	public void updateResort(Resort resort,long r_reservation_number);
-	public Resort getResort(long r_reservation_number);
+	public void updateGuest(Guest guest,long guestId);
+	
+	
+	public Guest getGuest(long guestId);
 
 }
