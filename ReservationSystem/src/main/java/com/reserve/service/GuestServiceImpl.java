@@ -24,4 +24,14 @@ public class GuestServiceImpl implements GuestService {
 		return guestDao.getResortDetails(guestId);
 	}
 
+	@Override
+	public DiningReservation cancelDining(int diningReservationNum) {
+		return guestDao.cancelDining(diningReservationNum);
+	}
+
+	@Override
+	public ResortReservation cancelResort(int resortReservationNum) {
+		return guestDao.cancelResort(resortReservationNum);
+	}
+
 }

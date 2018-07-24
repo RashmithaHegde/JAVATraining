@@ -21,7 +21,7 @@ public class DiningRowMapper implements RowMapper<DiningReservation> {
 		dining.setNoOfPeople(rs.getInt("no_of_people"));
 		dining.setStatus(rs.getString("status"));
 		dining.setCreatedDate(rs.getDate("created_date"));
-		dining.setArrivalDate(rs.getDate("updated_date"));
+		dining.setUpdatedDate(rs.getDate("updated_date"));
 		
 		return dining;
 		
