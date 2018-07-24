@@ -28,6 +28,12 @@ public class GuestServiceImpl implements IGuestService{
 		
 	return	dao.getGuest(guestId);
 	}
+
+	@Override
+	public long validate(String email, String password) {
+		
+		return dao.validate(email, password);
+	}
 	
 	
 }

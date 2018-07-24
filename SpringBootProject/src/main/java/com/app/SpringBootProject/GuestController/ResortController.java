@@ -23,6 +23,9 @@ public class ResortController {
 	{
 		service.registerResort(resort);
 	}
+	
+
+	
  
 	@PutMapping("/resort/update/{r_reservation_number}")
 	public void updateResort(@PathVariable long r_reservation_number  ,@RequestBody Resort resort)

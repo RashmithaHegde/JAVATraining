@@ -20,11 +20,28 @@ public class GuestController {
 	@Autowired
 	IGuestService service;
 	
+	@PostMapping("/guest/login")
+	public String login(@RequestBody Guest guest)
+	{
+		
+	  long guestId=service.validate(guest.getEmail(), guest.getPassword());
+	  
+	  if(guestId==0)
+	  {
+		  return "Please register yourself before login.";
+	  }
+	
+	return "You have logged in successfully. Your guest id is "+guestId;
+		
+	}
+	
 	@PostMapping("/guest/register")
 	public void Register(@RequestBody Guest guest)
 	{
 		service.registerGuest(guest);
 	}
+	
+	
  
 	@PutMapping("/guest/update/{guestId}")
 	public void updateGuest(@PathVariable long guestId  ,@RequestBody Guest guest)
