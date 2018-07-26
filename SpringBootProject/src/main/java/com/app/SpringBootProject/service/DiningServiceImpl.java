@@ -1,5 +1,7 @@
 package com.app.SpringBootProject.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,9 @@ public class DiningServiceImpl implements IDiningService {
 	DiningDaoImpl dao;
 
 	@Override
-	public void registerDining(Dining dining) {
+	public void registerDining(Dining dining,long guestId) {
 		
-		dao.registerDining(dining);
+		dao.registerDining(dining, guestId);
 	}
 
 	@Override
@@ -27,6 +29,17 @@ public class DiningServiceImpl implements IDiningService {
 	public Dining getDining(long dReservationNumber) {
 		
 		return dao.getDining(dReservationNumber);
+	}
+
+	@Override
+	public List<Dining> getAllDining(long guest_id) {
+		return dao.getAllDining(guest_id);
+	}
+
+	@Override
+	public long cancelDining(long dReservationNumber) {
+		
+		return dao.cancelDining(dReservationNumber);
 	}
 
 	

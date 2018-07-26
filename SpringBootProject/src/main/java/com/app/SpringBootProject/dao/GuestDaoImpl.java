@@ -1,6 +1,7 @@
 package com.app.SpringBootProject.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,27 +16,40 @@ public class GuestDaoImpl implements IGuestDao{
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
-
-	
-	
 	Date date=new Date();
 
 	@Override
-	public void registerGuest(Guest guest) {
+	public long registerGuest(Guest guest) {
+		
+		 long	success;
+		// long id=0;
 		String query = "INSERT INTO guest(email,first_name,last_name,address,phone,password,created_date,updated_date) VALUES (?,?,?,?,?,?,?,?)";
 
-		 jdbcTemplate.update(query, guest.getEmail(), guest.getFirstName(),
-				guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),date,date);
+		try {
+		 	success= jdbcTemplate.update(query, guest.getEmail(), guest.getFirstName(),
+					guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),date,date);
+		} catch(Exception e) {
+			return 0;
+		}
+		
+			return success;
 	
 	}
 
 	@Override
-	public void updateGuest(Guest guest, long guestId) {
+	public long updateGuest(Guest guest, long guestId) {
+		long success;
 		String query= "UPDATE guest SET email=?, first_name=?,last_name=?,address=?,phone=?,password=? WHERE guest_id=?";
-		jdbcTemplate.update(query,guest.getEmail(), guest.getFirstName(),
-				guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),guestId);
+	
+	
+		try {
+			success = jdbcTemplate.update(query,guest.getEmail(), guest.getFirstName(),
+					guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),guestId);
+		} catch (DataAccessException e) {
+			return 0;
+		}
 				
-		
+		return success;
 		
 	}
 
@@ -69,6 +83,10 @@ public class GuestDaoImpl implements IGuestDao{
 		
 		return guestId;
 	}
+
+	
+
+	
 	
 	
 

@@ -1,8 +1,10 @@
 package com.app.SpringBootProject.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,18 +20,18 @@ public class DiningDaoImpl implements IDiningDao {
 	JdbcTemplate jdbcTemplate;
 	
 	Date date=new Date();
-	java.sql.Date sqlDate = new  java.sql.Date(date.getTime());
+	//java.sql.Date sqlDate = new  java.sql.Date(date.getTime());
 	
 	
 
 	@Override
-	public void registerDining(Dining dining) {
+	public void registerDining(Dining dining,long guestId) {
 		
 		String status="booked";
 		
 		String query= "INSERT INTO dining(guest_id,dining_type,arrival_date,no_of_people,created_date,updated_date) VALUES (?,?,?,?,?,?)";
 		
-		long success=jdbcTemplate.update(query,1,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),date,date);
+		long success=jdbcTemplate.update(query,guestId,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),date,date);
 		
 		if(success==1)
 		{
@@ -47,8 +49,12 @@ public class DiningDaoImpl implements IDiningDao {
 	@Override
 	public void updateDining(Dining dining, long dReservationNumber) {
 		
-		String query= "UPDATE dining SET dining_type=?, arrival_date=?,no_of_people=?,updated_date=? WHERE d_reservation_number=?";
-		jdbcTemplate.update(query,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),date,dReservationNumber);
+		
+		String query= "UPDATE dining SET dining_type=?, arrival_date=?,no_of_people=?,updated_date=? "
+				+ "WHERE d_reservation_number=?";
+		
+		jdbcTemplate.update(query,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),
+				date,dReservationNumber);
 				
 		
 		
@@ -60,6 +66,36 @@ public class DiningDaoImpl implements IDiningDao {
 		Dining dining = jdbcTemplate.queryForObject("SELECT * FROM dining WHERE d_reservation_number = ?",
 			     new Object[] { dReservationNumber }, new DiningRowMapper());
 		return dining;
+	}
+
+	@Override
+	public List<Dining> getAllDining(long guest_id) {
+		String query="SELECT * FROM DINING WHERE guest_id="+guest_id+"";
+		List<Dining> dining=jdbcTemplate.query(query,new DiningRowMapper());
+		return dining;
+	
+	}
+
+	@Override
+	public long cancelDining(long dReservationNumber) {
+		String status = "cancelled";
+		long success;
+		
+		String query1 = "UPDATE dining SET status=? where d_reservation_number="+dReservationNumber+"";
+		
+		try {
+			
+			success = jdbcTemplate.update(query1,status);
+			
+		} catch (DataAccessException e) {
+			return 0;
+		}
+		if(success==1)
+		{
+			return dReservationNumber;
+		}
+		return dReservationNumber;
+		
 	}
 	
 	

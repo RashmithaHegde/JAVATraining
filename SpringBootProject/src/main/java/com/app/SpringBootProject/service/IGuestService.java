@@ -5,12 +5,14 @@ import com.app.SpringBootProject.bean.Guest;
 public interface IGuestService {
 	
 	
-	public void registerGuest(Guest guest);
+	public long registerGuest(Guest guest);
 	
-	public void updateGuest(Guest guest,long guestId);
+	public long updateGuest(Guest guest,long guestId);
 	
 	
 	public Guest getGuest(long guestId);
 	
 	public long validate(String email, String password);
+	
+	
 }

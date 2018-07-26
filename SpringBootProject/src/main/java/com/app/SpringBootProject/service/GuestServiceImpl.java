@@ -12,14 +12,14 @@ public class GuestServiceImpl implements IGuestService{
 	IGuestDao dao;
 
 	@Override
-	public void registerGuest(Guest guest) {
-		dao.registerGuest(guest);
+	public long registerGuest(Guest guest) {
+		return dao.registerGuest(guest);
 		
 	}
 
 	@Override
-	public void updateGuest(Guest guest, long guestId) {
-	dao.updateGuest(guest, guestId);
+	public long updateGuest(Guest guest, long guestId) {
+	return dao.updateGuest(guest, guestId);
 		
 	}
 
@@ -34,6 +34,7 @@ public class GuestServiceImpl implements IGuestService{
 		
 		return dao.validate(email, password);
 	}
+
 	
 	
 }
