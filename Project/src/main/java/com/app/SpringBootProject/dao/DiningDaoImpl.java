@@ -2,6 +2,7 @@ package com.app.SpringBootProject.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -19,6 +20,8 @@ public class DiningDaoImpl implements IDiningDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
+	private static final Logger LOGGER = Logger.getLogger("DiningDaoImpl.class");
+	
 	Date date=new Date();
 	//java.sql.Date sqlDate = new  java.sql.Date(date.getTime());
 	
@@ -34,6 +37,8 @@ public class DiningDaoImpl implements IDiningDao {
 		try {
 			success=jdbcTemplate.update(query,guestId,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),date,date);
 		} catch (DataAccessException e) {
+			
+			LOGGER.info("DataAccessException occured in register dining. . .!!!");
 			return null;
 		}
 		
@@ -65,6 +70,7 @@ public class DiningDaoImpl implements IDiningDao {
 			success = jdbcTemplate.update(query,dining.getDiningType(),dining.getArrivalDate(),dining.getNoOfPeople(),
 					date,dReservationNumber);
 		} catch (DataAccessException e) {
+			LOGGER.info("DataAccessException occured in update dining. . .!!!");
 			return 0;
 		}
 			
@@ -82,6 +88,7 @@ public class DiningDaoImpl implements IDiningDao {
 				dining = jdbcTemplate.queryForObject("SELECT * FROM dining WHERE d_reservation_number = ?",
 					     new Object[] { dReservationNumber }, new DiningRowMapper());
 			} catch (DataAccessException e) {
+				LOGGER.info("DataAccessException occured in get dining. . .!!!");
 				return null;
 			}
 		
@@ -89,12 +96,13 @@ public class DiningDaoImpl implements IDiningDao {
 	}
 
 	@Override
-	public List<Dining> getAllDining(long guest_id) {
-		String query="SELECT * FROM DINING WHERE guest_id="+guest_id+"";
+	public List<Dining> getAllDining(long guestId) {
+		String query="SELECT * FROM DINING WHERE guest_id="+guestId+"";
 		List<Dining> dining;
 		try {
 			dining = jdbcTemplate.query(query,new DiningRowMapper());
 		} catch (DataAccessException e) {
+			LOGGER.info("DataAccessException occured in get All Dining. . .!!!");
 			return null;
 
 		}
@@ -113,7 +121,8 @@ public class DiningDaoImpl implements IDiningDao {
 			
 			success = jdbcTemplate.update(query1,status);
 			
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
+			LOGGER.info("DataAccessException occured in cancel dining. . .!!!");
 			return 0;
 		}
 		if(success==1)

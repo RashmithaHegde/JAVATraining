@@ -1,6 +1,7 @@
 package com.app.SpringBootProject.GuestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,21 +20,22 @@ import com.app.SpringBootProject.service.IResortService;
 
 public class ResortController {
 	
+	private static final Logger LOGGER = Logger.getLogger("ResortController.class");
+	
 	@Autowired
 	IResortService service;
 	
-	@PostMapping("/resort/register/{guest_id}")
-	public ResponseEntity<Resort> Register(@PathVariable long guest_id, @RequestBody Resort resort)
+	@PostMapping("/resort/register/{guestId}")
+	public ResponseEntity<Resort> register(@PathVariable long guestId, @RequestBody Resort resort)
 	{
-		//long status=0;
 		
-		
-		Resort resort1=service.registerResort(resort,guest_id);
+		Resort resort1=service.registerResort(resort,guestId);
 		if(resort1!=null)
 		{
-			
+			LOGGER.warning("Resort registration successfull......");
 			return new ResponseEntity<Resort>(resort1,HttpStatus.CREATED);
 		}
+		LOGGER.warning("Registration Failed......Try again");
 		return new ResponseEntity<Resort>(HttpStatus.BAD_REQUEST);
 	}
 	
@@ -41,55 +43,61 @@ public class ResortController {
 	
 	
  
-	@PutMapping("/resort/update/{r_reservation_number}")
-	public ResponseEntity<Resort> updateResort(@PathVariable long r_reservation_number  ,@RequestBody Resort resort)
+	@PutMapping("/resort/update/{rReservationNumber}")
+	public ResponseEntity<Resort> updateResort(@PathVariable long rReservationNumber  ,@RequestBody Resort resort)
 	{
 		long status=0;
 		
-			status=service.updateResort(resort,r_reservation_number);
+			status=service.updateResort(resort,rReservationNumber);
 			
-			Resort resort1=service.getResort(r_reservation_number);
+			Resort resort1=service.getResort(rReservationNumber);
 		if(status>0)
 		{
+			 LOGGER.warning("Resort updated successfully......");
 			return new ResponseEntity<Resort>(resort1, HttpStatus.CREATED);
 		}
+		LOGGER.warning("Updation Failed......Try again");
 		return new ResponseEntity<Resort>(HttpStatus.BAD_REQUEST);
 		
 		
 	}
 	
-	@GetMapping("/resort/get/{r_reservation_number}")
-	public ResponseEntity<Resort> getResort(@PathVariable long r_reservation_number )
+	@GetMapping("/resort/get/{rReservationNumber}")
+	public ResponseEntity<Resort> getResort(@PathVariable long rReservationNumber )
 	{
-		Resort resort=service.getResort(r_reservation_number);
+		Resort resort=service.getResort(rReservationNumber);
 		if(resort!=null)
 		{
-			
+			LOGGER.warning("Retrieved Resort information successfull......");
 			return new ResponseEntity<Resort>(resort,HttpStatus.CREATED);
 		}
+		LOGGER.warning("Retrieving Resort information Failed......Try again");
 		return new ResponseEntity<Resort>(HttpStatus.BAD_REQUEST);
 	}
 	
-	@GetMapping("/resort/getall/{guest_id}")
-	public List<Resort> getAllResort(@PathVariable long guest_id )
+	@GetMapping("/resort/getall/{guestId}")
+	public List<Resort> getAllResort(@PathVariable long guestId )
 	{
-		List<Resort> resort=service.getAllResort(guest_id);
+		List<Resort> resort=service.getAllResort(guestId);
 		return resort;
 	}
 	
-	@PutMapping("/resort/cancel/{r_reservation_number}")
-	public ResponseEntity<Resort> cancelResort(@PathVariable long r_reservation_number)
+	@PutMapping("/resort/cancel/{rReservationNumber}")
+	public ResponseEntity<Resort> cancelResort(@PathVariable long rReservationNumber)
 	{
 		long success=0;
-		success=service.cancelResort(r_reservation_number);
+		success=service.cancelResort(rReservationNumber);
 		
 		if(success>0)
 		{
+			LOGGER.warning("Resort information deleted successfully......");
 			return new ResponseEntity<Resort>( HttpStatus.CREATED);
 		}
 		else
-		return new ResponseEntity<Resort>(HttpStatus.BAD_REQUEST);
-		
+		{
+			LOGGER.warning("Failed to delete Resort information......");
+			return new ResponseEntity<Resort>(HttpStatus.BAD_REQUEST);
+		}
 		
 		
 	}

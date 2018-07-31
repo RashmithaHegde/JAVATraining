@@ -15,33 +15,33 @@ public class ResortServiceImpl implements IResortService {
 	private ResortDaoImpl dao;
 	
 	@Override
-	public Resort registerResort(Resort resort,long guest_id) {
-		 return dao.registerResort(resort,guest_id);
+	public Resort registerResort(Resort resort,long guestId) {
+		 return dao.registerResort(resort,guestId);
 		
 	}
 
 	@Override
-	public long updateResort(Resort resort,long r_reservation_number) {
-		return dao.updateResort(resort,r_reservation_number);
+	public long updateResort(Resort resort,long rReservationNumber) {
+		return dao.updateResort(resort,rReservationNumber);
 		
 	}
 
 	@Override
-	public Resort getResort(long r_reservation_number) {
+	public Resort getResort(long rReservationNumber) {
 		
-		return dao.getResort(r_reservation_number);
+		return dao.getResort(rReservationNumber);
 	}
 
 	@Override
-	public List<Resort> getAllResort(long guest_id) {
+	public List<Resort> getAllResort(long guestId) {
 		
-		return dao.getAllResort(guest_id);
+		return dao.getAllResort(guestId);
 	}
 
 	@Override
-	public long cancelResort(long r_reservation_number) {
+	public long cancelResort(long rReservationNumber) {
 		
-		return dao.cancelResort(r_reservation_number);
+		return dao.cancelResort(rReservationNumber);
 	}
 
 }

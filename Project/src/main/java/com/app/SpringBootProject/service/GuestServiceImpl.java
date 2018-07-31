@@ -30,7 +30,7 @@ public class GuestServiceImpl implements IGuestService{
 	}
 
 	@Override
-	public long validate(String email, String password) {
+	public Guest validate(String email, String password) {
 		
 		return dao.validate(email, password);
 	}

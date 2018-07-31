@@ -1,6 +1,7 @@
 package com.app.SpringBootProject.dao;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +13,9 @@ import com.app.SpringBootProject.bean.GuestRowMapper;
 
 @Repository
 public class GuestDaoImpl implements IGuestDao{
+
+	private static final Logger LOGGER = Logger.getLogger("GuestDaoImpl.class");
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
@@ -27,7 +31,8 @@ public class GuestDaoImpl implements IGuestDao{
 		try {
 		 	jdbcTemplate.update(query, guest.getEmail(), guest.getFirstName(),
 					guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),date,date);
-		} catch(Exception e) {
+		} catch(DataAccessException e) {
+			LOGGER.info("DataAccessException occured in register guest. . .!!!");
 			return null;
 		}
 		Guest guest1 = jdbcTemplate.queryForObject("select * from guest where guest_id in(select max(guest_id) from guest);", new GuestRowMapper());
@@ -46,6 +51,7 @@ public class GuestDaoImpl implements IGuestDao{
 			success = jdbcTemplate.update(query, guest.getFirstName(),
 					guest.getLastName(), guest.getAddress(), guest.getPhone(), guest.getPassword(),guestId);
 		} catch (DataAccessException e) {
+			LOGGER.info("DataAccessException occured in update guest .!!!");
 			return 0;
 		}
 		
@@ -61,33 +67,25 @@ public class GuestDaoImpl implements IGuestDao{
 			guest = jdbcTemplate.queryForObject("SELECT * FROM guest WHERE guest_id = ?",
 				     new Object[] { guestId }, new GuestRowMapper());
 		} catch (DataAccessException e) {
+			LOGGER.info("DataAccessException occured in get guest. . .!!!");
 			return null;
 		}
 		return guest;
 	}
 
 	@Override
-	public long validate(String email, String password) {
+	public Guest validate(String email, String password) {
 	
 		Guest guest =new Guest();
-		
-	    guest=null;
-	    long guestId=0;
-		try {
+			try {
 			guest= jdbcTemplate.queryForObject("SELECT * FROM guest WHERE email = ? AND password =?",
 				     new Object[] { email, password }, new GuestRowMapper());
 		} catch (DataAccessException e) {
-			
-			return 0;
+			LOGGER.info("DataAccessException occured while validating. . .!!!");
+			return null;
 		}
 		
-		if(guest!=null)
-		{
-			guestId= guest.getguestId();
-		}
-		
-		
-		return guestId;
+		return guest;
 	}
 
 	

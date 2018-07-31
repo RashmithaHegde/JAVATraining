@@ -6,11 +6,11 @@ import com.app.SpringBootProject.bean.Resort;
 
 public interface IResortDao {
 	
-	public Resort registerResort(Resort resort,long guest_id);
+	public Resort registerResort(Resort resort,long guestId);
 	
-	public long updateResort(Resort resort,long r_reservation_number);
-	public Resort getResort(long r_reservation_number);
-	public List<Resort> getAllResort(long guest_id);
-	public long cancelResort(long r_reservation_number);
+	public long updateResort(Resort resort,long rReservationNumber);
+	public Resort getResort(long rReservationNumber);
+	public List<Resort> getAllResort(long guestId);
+	public long cancelResort(long rReservationNumber);
 
 }

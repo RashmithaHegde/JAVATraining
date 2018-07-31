@@ -10,6 +10,6 @@ public interface IDiningService {
 	
 	public long updateDining(Dining dining,long dReservationNumber);
 	public Dining getDining(long dReservationNumber);
-	public List<Dining> getAllDining(long guest_id);
+	public List<Dining> getAllDining(long guestId);
 	public long cancelDining(long dReservationNumber);
 }

@@ -6,10 +6,10 @@ import com.app.SpringBootProject.bean.Resort;
 
 public interface IResortService {
 	
-	public Resort registerResort(Resort resort,long guest_id);
-	public long updateResort(Resort resort,long r_reservation_number);
-	public List<Resort> getAllResort(long guest_id);
-	public Resort getResort(long r_reservation_number);
-	public long cancelResort(long r_reservation_number);
+	public Resort registerResort(Resort resort,long guestId);
+	public long updateResort(Resort resort,long rReservationNumber);
+	public List<Resort> getAllResort(long guestId);
+	public Resort getResort(long rReservationNumber);
+	public long cancelResort(long rReservationNumber);
 }
 

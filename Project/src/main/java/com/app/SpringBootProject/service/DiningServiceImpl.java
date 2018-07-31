@@ -32,8 +32,8 @@ public class DiningServiceImpl implements IDiningService {
 	}
 
 	@Override
-	public List<Dining> getAllDining(long guest_id) {
-		return dao.getAllDining(guest_id);
+	public List<Dining> getAllDining(long guestId) {
+		return dao.getAllDining(guestId);
 	}
 
 	@Override

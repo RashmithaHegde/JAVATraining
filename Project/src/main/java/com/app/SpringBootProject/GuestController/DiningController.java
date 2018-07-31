@@ -1,6 +1,7 @@
 package com.app.SpringBootProject.GuestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,25 +14,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.SpringBootProject.bean.Dining;
-import com.app.SpringBootProject.bean.Resort;
+
 import com.app.SpringBootProject.service.IDiningService;
 
 @RestController
 public class DiningController {
 	
+	private static final Logger LOGGER = Logger.getLogger("DiningController.class");
+
+	
 	@Autowired
 	IDiningService service;
 	
 	@PostMapping("/dining/register/{guestId}")
-	public ResponseEntity<Dining> Register(@PathVariable long guestId,@RequestBody Dining dining)
+	public ResponseEntity<Dining> register(@PathVariable long guestId,@RequestBody Dining dining)
 	{
 	
 		Dining dining1 = service.registerDining(dining,guestId);
 		
 		if(dining1!=null)
 		{
+			LOGGER.warning("Dining registration successfull......");
 			return new ResponseEntity<Dining>(dining1, HttpStatus.CREATED);
 		}
+		LOGGER.warning("Registration Failed......Try again");
 		return new ResponseEntity<Dining>(HttpStatus.BAD_REQUEST);
 	}
  
@@ -47,8 +53,10 @@ public class DiningController {
 		
 			if(status!=0)
 			{
+				 LOGGER.warning("Dining updated successfully......");
 				return new ResponseEntity<Dining>(dining1, HttpStatus.CREATED);
 			}
+			LOGGER.warning("Updation Failed......Try again");
 			return new ResponseEntity<Dining>(HttpStatus.BAD_REQUEST);
 		
 		
@@ -62,19 +70,19 @@ public class DiningController {
 			dining = service.getDining(dReservationNumber);
 			if(dining!=null)
 			{
-				
+				LOGGER.warning("Retrieved Dining information successfull......");
 				return new ResponseEntity<Dining>(dining,HttpStatus.CREATED);
 			}
-			else
+			LOGGER.warning("Retrieving Dining information Failed......Try again");
 			return new ResponseEntity<Dining>(HttpStatus.BAD_REQUEST);
 	}
 	
-	@GetMapping("/dining/getall/{guest_id}")
-	public List<Dining> getAllDining(@PathVariable long guest_id )
+	@GetMapping("/dining/getall/{guestId}")
+	public List<Dining> getAllDining(@PathVariable long guestId )
 	{
 		List<Dining> dining;
 		try {
-			dining = service.getAllDining(guest_id);
+			dining = service.getAllDining(guestId);
 		} catch (Exception e) {
 			return null;
 		}
@@ -90,10 +98,15 @@ public class DiningController {
 
 		if(success>0)
 		{
+			LOGGER.warning("Dining information deleted successfully......");
 			return new ResponseEntity<Dining>( HttpStatus.CREATED);
 		}
 		else
-		return new ResponseEntity<Dining>(HttpStatus.BAD_REQUEST);
+		{
+			LOGGER.warning("Failed to delete Dining information......");
+			return new ResponseEntity<Dining>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	

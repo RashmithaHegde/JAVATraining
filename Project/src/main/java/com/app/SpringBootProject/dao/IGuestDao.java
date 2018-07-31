@@ -12,7 +12,7 @@ public interface IGuestDao {
 	
 	public Guest getGuest(long guestId);
 	
-	public long validate(String email, String password);
+	public Guest validate(String email, String password);
 	
 	
 }
